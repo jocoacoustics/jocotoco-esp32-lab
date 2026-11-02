@@ -1,0 +1,22 @@
+# Datos locales y credenciales: nunca subir.
+.venv/
+node_modules/
+.work/
+data/
+resultados/
+backups/
+logs/
+firmware/downloads/
+firmware/build/
+__pycache__/
+*.py[cod]
+.env
+.env.*
+!.env.example
+*.bin
+*.elf
+*.map
+*.sqlite*
+*.db
+*.zip
+*.log

@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Jocotoco · Radio Lab</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <aside>
+      <div class="brand"><span>◈</span> jocotoco<small>RADIO LAB / 01</small></div>
+      <nav>
+        <a class="active" href="#overview">◉ &nbsp; Vista general</a
+        ><a href="#spectrum">≋ &nbsp; Entorno Wi-Fi</a><a href="#clients">⌘ &nbsp; Dispositivos</a
+        ><a href="#experiments">◇ &nbsp; Experimentos</a>
+      </nav>
+      <div class="device">
+        <span class="eyebrow">Estación de laboratorio</span><b>ESP32 DEVKIT V1</b
+        ><span class="dim">4 MB · 2,4 GHz · USB</span><br /><span id="port"
+          >Buscando conexión…</span
+        >
+      </div>
+    </aside>
+    <main>
+      <header class="top">
+        <span class="eyebrow">Fundación Jocotoco &nbsp;/&nbsp; Exploración de radio</span
+        ><span class="badge"
+          ><span class="dot" id="led"></span
+          ><span id="connection">Conectando al laboratorio</span></span
+        >
+      </header>
+      <section id="overview">
+        <div class="intro">
+          <div>
+            <span class="eyebrow accent">Tu red, a la vista</span>
+            <h1>Pequeño chip. Gran perspectiva.</h1>
+            <p>Observa el enlace y el tráfico de Jocotoco-Lab en tiempo real.</p>
+          </div>
+          <div class="actions">
+            <button id="pause">Pausar lectura</button
+            ><button id="export" class="primary">↓ Exportar sesión</button>
+          </div>
+        </div>
+        <div id="notice" class="notice"></div>
+        <div class="metrics">
+          <div class="card metric">
+            <div class="label">Señal del router <span>◔</span></div>
+            <div class="value accent"><span id="rssi">—</span> <small>dBm</small></div>
+            <div class="foot" id="quality">Esperando medición real</div>
+          </div>
+          <div class="card metric">
+            <div class="label">Recepción del ESP32 <span>↙</span></div>
+            <div class="value"><span id="down">—</span> <small>Mbps</small></div>
+            <div class="foot">Tráfico observado · no es un Speedtest</div>
+          </div>
+          <div class="card metric">
+            <div class="label">Datos recibidos / enviados <span>⇄</span></div>
+            <div class="value" style="font-size: 26px; margin-top: 22px">
+              <span id="totals">— / —</span>
+            </div>
+            <div class="foot">Contadores del enlace desde su reinicio</div>
+          </div>
+          <div class="card metric">
+            <div class="label">Clientes conectados <span>⌘</span></div>
+            <div class="value"><span id="count">—</span> <small>dispositivos</small></div>
+            <div class="foot">Conectados al AP Jocotoco-Lab</div>
+          </div>
+        </div>
+        <div class="grid">
+          <div class="card">
+            <div class="cardhead">
+              <h2>El pulso de la red</h2>
+              <div class="legend">
+                <span><i></i>Recibido</span><span><i class="teal"></i>Enviado</span>
+              </div>
+            </div>
+            <p style="font-size: 11px; margin: 7px 0">
+              Mbps · promedio entre lecturas USB · últimos 360 puntos
+            </p>
+            <div class="chart">
+              <svg id="traffic" viewBox="0 0 600 180" preserveAspectRatio="none"></svg>
+              <div class="empty" id="trafficEmpty">
+                La gráfica aparecerá con las primeras lecturas.
+              </div>
+            </div>
+            <div class="axis"><span id="trafficMax">Escala automática</span><span>Ahora</span></div>
+          </div>
+          <div class="card">
+            <div class="cardhead">
+              <h2>Ruta de la conexión</h2>
+              <span class="pill">NAT</span>
+            </div>
+            <div class="link">
+              <div class="node">
+                <div class="icon">⌂</div>
+                Router doméstico
+              </div>
+              <div class="connector"></div>
+              <div class="node">
+                <div class="icon">◈</div>
+                ESP32
+              </div>
+              <div class="connector"></div>
+              <div class="node">
+                <div class="icon">▯</div>
+                Tus clientes
+              </div>
+            </div>
+            <div class="linknote" id="route">Esperando el estado del enlace…</div>
+            <div class="kv"><span>Red del laboratorio</span><b>Jocotoco-Lab</b></div>
+            <div class="kv">
+              <span>Administración web / TCP</span><b id="security">Sin comprobar</b>
+            </div>
+            <div class="kv"><span>Tiempo de actividad</span><b id="uptime">—</b></div>
+          </div>
+        </div>
+        <div class="grid">
+          <div class="card">
+            <div class="cardhead">
+              <h2>Intensidad a lo largo del tiempo</h2>
+              <span class="pill">RSSI · dBm</span>
+            </div>
+            <div class="chart" style="height: 135px">
+              <svg id="signal" viewBox="0 0 600 130" preserveAspectRatio="none"></svg>
+              <div class="empty" id="signalEmpty">Sin muestras de señal</div>
+            </div>
+            <div class="axis">
+              <span>−100 dBm · más débil</span><span>−30 dBm · más fuerte</span>
+            </div>
+          </div>
+          <div class="card">
+            <h2>Cómo leer tus mediciones</h2>
+            <p style="font-size: 12px">
+              Una señal menos negativa es más fuerte:
+              <span class="accent">−45 dBm supera a −80 dBm.</span> No equivale a distancia ni
+              garantiza velocidad.
+            </p>
+            <p style="font-size: 12px">
+              Los Mbps reflejan actividad real del enlace. Si nadie transfiere datos, una lectura
+              cercana a cero es normal.
+            </p>
+          </div>
+        </div>
+      </section>
+      <div class="grid">
+        <section class="card" id="spectrum">
+          <div class="cardhead">
+            <div>
+              <h2>El vecindario de 2,4 GHz</h2>
+              <p style="font-size: 11px; margin: 5px 0">
+                Escaneo bajo demanda; puede interrumpir brevemente el tráfico.
+              </p>
+            </div>
+            <button id="scan">↻ Explorar</button>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Red</th>
+                <th>Canal</th>
+                <th>Seguridad</th>
+                <th>Señal</th>
+              </tr>
+            </thead>
+            <tbody id="networks">
+              <tr>
+                <td colspan="4" class="emptyrow">Pulsa Explorar para medir redes cercanas.</td>
+              </tr>
+            </tbody>
+          </table>
+          <p id="scanTime" class="foot">No se realizan escaneos continuos.</p>
+        </section>
+        <section class="card" id="clients">
+          <div class="cardhead">
+            <h2>En tu punto de acceso</h2>
+            <span class="pill">Clientes</span>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Dispositivo</th>
+                <th>IP local</th>
+              </tr>
+            </thead>
+            <tbody id="clientRows">
+              <tr>
+                <td colspan="2" class="emptyrow">Esperando lectura USB.</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="foot">
+            MAC parcialmente oculta. No se muestran contraseñas ni contenido del tráfico.
+          </p>
+          <div class="kv"><span>Latencia / pérdida</span><b>Sin medir</b></div>
+          <div class="kv"><span>Temperatura</span><b>Sin sensor medido</b></div>
+        </section>
+      </div>
+      <section id="experiments" class="future">
+        <div class="card">
+          <div class="cardhead">
+            <h2>◌ &nbsp; Exploración Bluetooth LE</h2>
+            <span class="pill">No disponible</span>
+          </div>
+          <p>
+            Señal y anuncios BLE. Requiere integrar firmware; tu repetidor actual no recopila estos
+            datos.
+          </p>
+        </div>
+        <div class="card">
+          <div class="cardhead">
+            <h2>⌁ &nbsp; Movimiento por Wi-Fi CSI</h2>
+            <span class="pill">Experimental · pendiente</span>
+          </div>
+          <p>
+            No se infiere presencia con estas gráficas RSSI. Requiere firmware específico y
+            calibración.
+          </p>
+        </div>
+      </section>
+      <footer class="statusbar">
+        <span id="last">Sin lectura todavía</span
+        ><span>LOCAL · Datos en memoria · Firmware sin modificar · v0.2.0</span>
+      </footer>
+    </main>
+    <script src="/main.js"></script>
+    <script src="/history.js"></script>
+    <script src="/network.js"></script>
+    <script src="/health.js"></script>
+  </body>
+</html>

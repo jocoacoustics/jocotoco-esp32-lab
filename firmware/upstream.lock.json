@@ -1,0 +1,7 @@
+{
+  "repository": "https://github.com/martin-ger/esp32_nat_router",
+  "commit": "119e0a3d98a7c580a0fd119fde27d189cda25d39",
+  "idf": "v5.5.4",
+  "source_zip_sha256": "51c2949eb506d396334130838939e8ae37b2be50be3d038423ac8c3020cce9b1",
+  "application_version": "2.4.22-joco0.6.0"
+}

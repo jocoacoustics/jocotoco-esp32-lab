@@ -1,0 +1,40 @@
+dependencies:
+  esp_wireguard:
+    component_hash: d6a3aefc76c1f5bd802ae2fdea07ce89206e0a14ae87b2ce289a3389ce99645a
+    dependencies: []
+    source:
+      git: https://github.com/martin-ger/esp_wireguard_idf_5.5.x.git
+      path: .
+      type: git
+    version: 02a24fad29365db09e0088df2f8c4414632fe35a
+  espressif/led_strip:
+    component_hash: 027f68f2b57b0dca1d68dff6cc1139d9093825aa808c2bc3ca42bb2ce530fce9
+    dependencies:
+    - name: idf
+      require: private
+      version: '>=5.2'
+    source:
+      registry_url: https://components.espressif.com/
+      type: service
+    version: 3.1.1
+  espressif/mdns:
+    component_hash: ef0766474b37459f6ad22461e453a8713e780e831a7c993b16919d817988dff6
+    dependencies:
+    - name: idf
+      require: private
+      version: '>=5.0'
+    source:
+      registry_url: https://components.espressif.com/
+      type: service
+    version: 1.14.1
+  idf:
+    source:
+      type: idf
+    version: 5.5.4
+direct_dependencies:
+- esp_wireguard
+- espressif/led_strip
+- espressif/mdns
+manifest_hash: 6ea0ce1cbf36385cbf240a6db8bc7ca05dc7bbb42bfc9ffb0526c2ab6919672e
+target: esp32
+version: 2.0.0

@@ -1,0 +1,10 @@
+{
+  "bytes": 1374656,
+  "sha256": "6fc9721a863d259dbea9ee0e517678ee0da29490dd6326e32887fb7f7101c101",
+  "version": "2.4.22-joco0.6.0",
+  "project": "esp32_nat_router",
+  "partition_table_unchanged": true,
+  "slot_bytes": 1572864,
+  "free_slot_bytes": 198208,
+  "status": "validated_source_build"
+}

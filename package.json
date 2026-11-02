@@ -1,0 +1,12 @@
+{
+  "name": "jocotoco-esp32-lab-source-tools",
+  "version": "0.6.1",
+  "private": true,
+  "scripts": {
+    "format": "prettier --write \"dashboard/*.js\" dashboard/index.html \"docs/*.md\" README.md",
+    "format:check": "prettier --check \"dashboard/*.js\" dashboard/index.html \"docs/*.md\" README.md"
+  },
+  "devDependencies": {
+    "prettier": "3.6.2"
+  }
+}
